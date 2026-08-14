@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Upload File - Secure File Sharing{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <i class="fas fa-upload"></i>
+            <h2>Upload File</h2>
+            <p>Your file will be encrypted automatically</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="upload-form">
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Drag & Drop or Click to Upload</h3>
+                <p>Maximum file size: 16 MB</p>
+                <p class="allowed-types">
+                    Allowed types: PDF, DOC, DOCX, TXT, ZIP, PNG, JPG, JPEG, GIF
+                </p>
+                <input 
+                    type="file" 
+                    name="file" 
+                    id="fileInput" 
+                    class="file-input" 
+                    required
+                >
+            </div>
+
+            <div id="fileInfo" class="file-info" style="display: none;">
+                <div class="file-details">
+                    <i class="fas fa-file"></i>
+                    <div>
+                        <p class="file-name"></p>
+                        <p class="file-size"></p>
+                    </div>
+                    <button type="button" class="btn-remove" onclick="removeFile()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="security-info">
+                <h4><i class="fas fa-shield-alt"></i> Security Features</h4>
+                <ul>
+                    <li><i class="fas fa-check"></i> File will be encrypted using AES encryption</li>
+                    <li><i class="fas fa-check"></i> SHA-256 hash will be calculated for integrity verification</li>
+                    <li><i class="fas fa-check"></i> Only you (and users you share with) can decrypt the file</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="uploadBtn" disabled>
+                <i class="fas fa-lock"></i> Encrypt & Upload
+            </button>
+        </form>
+
+        <div class="form-footer">
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Share File - Secure File Sharing{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <i class="fas fa-share-alt"></i>
+            <h2>Share File</h2>
+            <p>Share "{{ file.original_filename }}" with another user</p>
+        </div>
+
+        <div class="file-preview">
+            <i class="fas fa-file-alt"></i>
+            <div class="file-preview-info">
+                <h3>{{ file.original_filename }}</h3>
+                <p>Size: {{ (file.file_size / 1024) | round(2) }} KB</p>
+                <p>Uploaded: {{ file.upload_date.strftime('%Y-%m-%d %H:%M') }}</p>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('share', file_id=file.id) }}" class="auth-form">
+            <div class="form-group">
+                <label for="username">
+                    <i class="fas fa-user"></i> Username to share with
+                </label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-control" 
+                    required 
+                    placeholder="Enter username"
+                    autofocus
+                >
+            </div>
+
+            <div class="security-info">
+                <h4><i class="fas fa-info-circle"></i> Sharing Information</h4>
+                <ul>
+                    <li>The user will be able to download and decrypt this file</li>
+                    <li>You can track who accessed your file in the access logs</li>
+                    <li>The file remains encrypted during sharing</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-share-alt"></i> Share File
+            </button>
+        </form>
+
+        <div class="form-footer">
+            <a href="{{ url_for('dashboard') }}">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
