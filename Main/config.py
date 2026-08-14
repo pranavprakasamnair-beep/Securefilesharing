@@ -5,17 +5,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    """Application configuration class"""
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-this")
+
+    MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
+    MYSQL_USER = os.getenv("MYSQL_USER", "root")
+    MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "")
+    MYSQL_DB = os.getenv("MYSQL_DB", "secure_file_sharing")
+    MYSQL_CURSORCLASS = "DictCursor"
+
     
-    # Flask Configuration
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
-    
-    # MySQL Configuration
-    MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
-    MYSQL_USER = os.getenv('MYSQL_USER', 'root')
-    MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
-    MYSQL_DB = os.getenv('MYSQL_DB', 'secure_file_sharing')
-    MYSQL_CURSORCLASS = 'DictCursor'
     
     # Upload Configuration
     UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'static/uploads')

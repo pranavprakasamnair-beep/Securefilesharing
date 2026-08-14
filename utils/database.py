@@ -10,27 +10,78 @@ class Database:
     @staticmethod
     def get_user_by_username(username):
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
-        user = cursor.fetchone()
+        cursor.execute(
+            "SELECT id, username, email, password_hash FROM users WHERE username = %s",
+            (username,)
+        )
+        row = cursor.fetchone()
         cursor.close()
-        return user
+
+        if row is None:
+            return None
+
+        # If DictCursor is working
+        if isinstance(row, dict):
+            return row
+
+        # If MySQL returned a tuple
+        return {
+            'id': row[0],
+            'username': row[1],
+            'email': row[2],
+            'password_hash': row[3]
+        }
     
     @staticmethod
     def get_user_by_email(email):
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-        user = cursor.fetchone()
+        cursor.execute(
+            "SELECT id, username, email, password_hash FROM users WHERE email = %s",
+            (email,)
+        )
+        row = cursor.fetchone()
         cursor.close()
-        return user
-    
+
+        if row is None:
+            return None
+
+        # If DictCursor is working
+        if isinstance(row, dict):
+            return row
+
+        # If MySQL returned a tuple
+        return {
+            'id': row[0],
+            'username': row[1],
+            'email': row[2],
+            'password_hash': row[3]
+        }
+
     @staticmethod
     def get_user_by_id(user_id):
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-        user = cursor.fetchone()
+        cursor.execute(
+            "SELECT id, username, email, password_hash FROM users WHERE id = %s",
+            (user_id,)
+        )
+        row = cursor.fetchone()
         cursor.close()
-        return user
-    
+
+        if row is None:
+            return None
+
+        # If DictCursor is working
+        if isinstance(row, dict):
+            return row
+
+        # If MySQL returned a tuple
+        return {
+            'id': row[0],
+            'username': row[1],
+            'email': row[2],
+            'password_hash': row[3]
+        }
+
     @staticmethod
     def create_user(username, email, password_hash):
         cursor = mysql.connection.cursor()
