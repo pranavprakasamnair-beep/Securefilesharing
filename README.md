@@ -1,136 +1,188 @@
 # 🔐 Secure File Encryption & Sharing System
 
-A secure web-based file management system that allows users to **upload, encrypt, store, share, and download files securely**. The system uses **Fernet symmetric encryption** to protect file contents and **SHA-256 hashing** to verify file integrity.
+A Flask-based cybersecurity application designed to securely **upload, encrypt, store, share, and download files**. The system uses **Fernet symmetric encryption** to protect file contents, authentication to identify users, database management for file and user information, and controlled access for file sharing.
 
 ## 📌 Overview
 
-The **Secure File Encryption & Sharing System** is a cybersecurity-focused application designed to protect sensitive files from unauthorized access.
+The **Secure File Encryption & Sharing System** provides a secure way for users to manage and share files without storing the original file contents directly in an accessible form.
 
-When a user uploads a file, the application encrypts it before storing it on the server. Authorized users can download shared files, which are decrypted only when accessed through the application.
+When a user uploads a file, the application processes the file through the encryption module before storing it. Authenticated users can manage their files and share them with other users through the application.
 
-The project demonstrates practical concepts such as **file encryption, authentication, access control, secure file handling, and data integrity verification**.
+The project demonstrates practical cybersecurity concepts including:
+
+* File encryption and decryption
+* User authentication
+* Access control
+* Secure file handling
+* Database management
+* Environment-based configuration
+* Web application development
+
+---
 
 ## ✨ Features
 
 * 🔑 User registration and login
-* 🔒 Secure file encryption using **Fernet**
-* 📁 Secure file upload and storage
-* 📥 File download and automatic decryption
-* 👥 File sharing between authorized users
-* 🛡️ Access control for shared files
-* 🔍 SHA-256 based file integrity verification
-* 🗄️ SQLite database for user and file information
-* 📊 Basic activity/file management
-* 🌐 Web-based user interface
-* 🚫 Unauthorized users cannot access protected files
+* 👤 User authentication
+* 📤 Secure file upload
+* 🔐 File encryption using Fernet
+* 📥 Secure file download and decryption
+* 👥 File sharing between users
+* 🗄️ Database-backed user and file management
+* 📁 Dedicated upload storage
+* 🌐 Flask-based web interface
+* 🎨 Responsive frontend using HTML and CSS
+* ⚡ JavaScript-based frontend functionality
+* 🔒 Environment variables for sensitive configuration
+
+---
 
 ## 🛠️ Technologies Used
 
-| Technology                | Purpose                        |
-| ------------------------- | ------------------------------ |
-| **Python**                | Backend development            |
-| **Flask**                 | Web application framework      |
-| **SQLite**                | Database                       |
-| **Cryptography (Fernet)** | File encryption and decryption |
-| **SHA-256**               | File integrity verification    |
-| **HTML/CSS**              | Frontend                       |
-| **Jinja2**                | Dynamic HTML templates         |
-| **Git & GitHub**          | Version control                |
+| Technology                 | Purpose                         |
+| -------------------------- | ------------------------------- |
+| **Python**                 | Core programming language       |
+| **Flask**                  | Backend web framework           |
+| **Cryptography / Fernet**  | File encryption and decryption  |
+| **SQLite**                 | Database management             |
+| **HTML**                   | Web page structure              |
+| **CSS**                    | User interface styling          |
+| **JavaScript**             | Client-side functionality       |
+| **Jinja2**                 | Dynamic HTML templating         |
+| **python-dotenv / `.env`** | Environment-based configuration |
+| **Git**                    | Version control                 |
+| **GitHub**                 | Source code hosting             |
 
-## 🔐 How It Works
+---
+
+# 🔐 Security Architecture
+
+The main security workflow of the application can be represented as:
 
 ```text
-              ┌─────────────────┐
-              │      User       │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │  Login / Auth   │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │   File Upload   │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │ Generate SHA-256│
-              │    Hash         │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │ Fernet Encrypt  │
-              │      File       │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │ Encrypted File  │
-              │    Storage      │
-              └─────────────────┘
-
-
-For authorized download:
-
-Encrypted File
-      │
-      ▼
-Fernet Decryption
-      │
-      ▼
-Integrity Verification
-      │
-      ▼
-Original File
-      │
-      ▼
-     User
+                    USER
+                     │
+                     ▼
+             ┌───────────────┐
+             │ Authentication│
+             └───────┬───────┘
+                     │
+                     ▼
+               File Upload
+                     │
+                     ▼
+             ┌───────────────┐
+             │   Encryption  │
+             │    (Fernet)   │
+             └───────┬───────┘
+                     │
+                     ▼
+              Encrypted File
+                     │
+                     ▼
+             ┌───────────────┐
+             │    Database   │
+             │    Metadata   │
+             └───────────────┘
+                     │
+                     ▼
+              Authorized Access
+                     │
+                     ▼
+                 Download
+                     │
+                     ▼
+                Decryption
+                     │
+                     ▼
+              Original File
 ```
 
-## 🔒 Encryption
+---
 
-The project uses **Fernet symmetric encryption** from the Python `cryptography` library.
+# 🔒 Encryption
 
-Fernet provides authenticated symmetric encryption, meaning the same secret key is used for encryption and decryption while also helping detect unauthorized modification of encrypted data.
+The project uses **Fernet symmetric encryption** through Python's `cryptography` library.
 
-The original file is never stored directly in the file storage directory.
+Fernet uses a secret encryption key to encrypt and decrypt file data.
 
-### Encryption Flow
+### Encryption
 
 ```text
 Original File
-     ↓
+      │
+      ▼
 Read File Data
-     ↓
+      │
+      ▼
 Fernet Encryption
-     ↓
+      │
+      ▼
 Encrypted File
-     ↓
-Store Securely
+      │
+      ▼
+Secure Storage
 ```
 
-### Decryption Flow
+### Decryption
 
 ```text
 Encrypted File
-     ↓
+      │
+      ▼
 Retrieve File
-     ↓
+      │
+      ▼
 Fernet Decryption
-     ↓
-Integrity Verification
-     ↓
+      │
+      ▼
 Original File
+      │
+      ▼
+User Download
 ```
 
-## 🧩 File Sharing
+The encryption key is kept outside the source code using environment variables.
 
-The application provides controlled file sharing between registered users.
+> **Important:** The encryption key should never be committed to a public GitHub repository.
 
-When a file owner shares a file with another user, the system records the sharing permission in the database.
+---
+
+# 👤 Authentication
+
+The application contains a dedicated authentication module:
+
+```text
+Main/
+└── utils/
+    └── auth.py
+```
+
+The authentication functionality is responsible for handling user-related authentication operations.
+
+The general workflow is:
+
+```text
+User
+ ↓
+Register
+ ↓
+Login
+ ↓
+Authentication
+ ↓
+Access Application
+```
+
+Authentication ensures that application functionality is available only to authenticated users.
+
+---
+
+# 👥 File Sharing & Access Control
+
+The application allows users to share files through the web interface.
+
+The basic workflow is:
 
 ```text
 File Owner
@@ -142,217 +194,491 @@ Select File
 Select User
     │
     ▼
-Create Sharing Permission
+Share File
     │
     ▼
 Authorized User
     │
     ▼
-Download File
+Access / Download
 ```
 
-Only users who have the required permission can access the shared file.
+This provides controlled access to shared files instead of making all uploaded files publicly accessible.
 
-## 🔍 File Integrity
+---
 
-The system can use **SHA-256** to generate a unique hash of the original file.
+# 🗄️ Database
 
-Example:
+Database functionality is handled through:
 
 ```text
-File
- ↓
-SHA-256
- ↓
-Hash Value
+Main/
+└── utils/
+    └── database.py
 ```
 
-The generated hash can be used to verify whether the file contents have changed.
+The database is used to manage application information such as:
 
-If the calculated hash does not match the stored/reference hash, the file can be treated as potentially modified or corrupted.
-
-> **Note:** SHA-256 is used for integrity verification, not for encrypting the file.
-
-## 🗃️ Database
-
-The application uses **SQLite** to store application metadata such as:
-
-* User accounts
+* User information
 * File information
 * File ownership
-* File sharing permissions
-* File hashes
-* Relevant timestamps
+* File-sharing information
+* Other application metadata
 
-The actual file contents are stored separately in encrypted form.
+SQLite is suitable for this project because it is lightweight and integrates easily with Python applications.
 
-## 📂 Project Structure
+---
+
+# 🧰 Utility Modules
+
+The project separates important functionality into individual modules.
+
+### `auth.py`
+
+Handles authentication-related functionality.
 
 ```text
-secure-file-sharing/
-│
-├── app.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-├── Procfile
-├── vercel.json
-│
-├── templates/
-│   ├── login.html
-│   ├── register.html
-│   ├── dashboard.html
-│   └── ...
-│
-├── static/
-│   ├── css/
-│   └── js/
-│
-├── uploads/
-│   └── encrypted files
-│
-└── database/
-    └── database.db
+utils/
+└── auth.py
 ```
 
-> The exact structure may vary depending on the final implementation.
+### `database.py`
 
-## ⚙️ Installation & Setup
+Handles database-related operations.
 
-### 1. Clone the Repository
+```text
+utils/
+└── database.py
+```
+
+### `encryption.py`
+
+Contains the file encryption and decryption functionality.
+
+```text
+utils/
+└── encryption.py
+```
+
+### `__init__.py`
+
+Makes the `utils` directory usable as a Python package and supports importing the utility modules.
+
+---
+
+# 🌐 Frontend
+
+The frontend is organized into two main sections.
+
+## HTML Templates
+
+Located in:
+
+```text
+Main/templates/
+```
+
+The project contains:
+
+| File             | Purpose                |
+| ---------------- | ---------------------- |
+| `base.html`      | Base layout/template   |
+| `index.html`     | Main/home page         |
+| `login.html`     | Login interface        |
+| `register.html`  | Registration interface |
+| `dashboard.html` | User dashboard         |
+| `upload.html`    | File upload interface  |
+| `shared.html`    | Shared file interface  |
+
+The templates use **Jinja2**, allowing Flask to dynamically provide information to the HTML pages.
+
+---
+
+# 🎨 CSS
+
+The stylesheet is located at:
+
+```text
+Main/static/css/style.css
+```
+
+It controls the visual appearance and layout of the application.
+
+---
+
+# ⚡ JavaScript
+
+The JavaScript file is located at:
+
+```text
+Main/static/js/main.js
+```
+
+It provides client-side functionality and interaction for the web interface.
+
+---
+
+# 📁 Upload Storage
+
+The application contains a dedicated upload directory:
+
+```text
+Main/static/uploads/
+```
+
+This directory is used for file storage during application operation.
+
+Files should be handled carefully because uploaded files can contain sensitive information.
+
+---
+
+# ⚙️ Configuration
+
+The project contains configuration files:
+
+```text
+config.py
+```
+
+and:
+
+```text
+Main/config.py
+```
+
+Environment-specific and sensitive values are stored using:
+
+```text
+.env
+```
+
+Using environment variables helps prevent sensitive configuration such as secret keys from being hard-coded into the application.
+
+### Example
+
+```text
+SECRET_KEY=your_secret_key
+FERNET_KEY=your_encryption_key
+```
+
+> Never commit real secret keys or `.env` files to GitHub.
+
+---
+
+# 📂 Project Structure
+
+The current project structure is organized as follows:
+
+```text
+Securefilesharing/
+│
+├── __pycache__/
+│   └── config.cpython-314.pyc
+│
+├── .vscode/
+│   └── launch.json
+│
+├── Main/
+│   ├── .env
+│   ├── config.py
+│   │
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   │
+│   │   ├── js/
+│   │   │   └── main.js
+│   │   │
+│   │   └── uploads/
+│   │
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── dashboard.html
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── shared.html
+│   │   └── upload.html
+│   │
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── database.py
+│   │   └── encryption.py
+│   │
+│   └── venv/
+│
+├── .env
+├── .gitignore
+├── app.py
+├── config.py
+└── requirements.txt
+```
+
+### Important
+
+The following directories/files are **development or environment-specific** and should generally not be uploaded to GitHub:
+
+```text
+venv/
+__pycache__/
+.env
+```
+
+Your `.gitignore` should make sure sensitive and unnecessary files are excluded.
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/secure-file-sharing.git
 ```
 
-### 2. Navigate to the Project
+Replace the URL with your actual GitHub repository URL.
+
+## 2. Navigate to the Project
 
 ```bash
-cd secure-file-sharing
+cd Securefilesharing
 ```
 
-### 3. Create a Virtual Environment
-
-Windows:
+## 3. Create a Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate it:
+Activate it on Windows:
 
 ```bash
 venv\Scripts\activate
 ```
 
-Linux/macOS:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 4. Install Dependencies
+## 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Configure the Encryption Key
+## 5. Configure Environment Variables
 
-The encryption key should **not be hard-coded or uploaded to GitHub**.
+Create/configure your `.env` file with the required secret values.
 
-Set the required secret/encryption key using an environment variable.
-
-Example:
+For example:
 
 ```text
-FERNET_KEY=your-secret-key
+SECRET_KEY=your_secret_key
+FERNET_KEY=your_fernet_key
 ```
 
-Make sure sensitive configuration files are included in `.gitignore`.
+Use the variable names required by your actual `config.py`.
 
-### 6. Run the Application
+**Do not upload your real `.env` file to GitHub.**
+
+## 6. Run the Application
+
+From the project root:
 
 ```bash
 python app.py
 ```
 
-The application will start on the configured local Flask server.
+Then open the local Flask URL displayed in the terminal.
 
-Open the displayed local URL in your browser.
+---
 
-## 🔑 Security Considerations
+# 🔄 Application Workflow
 
-The project follows several basic security practices:
+### 1. Registration
 
-* Files are encrypted before storage.
-* Authentication is required to access user-specific functionality.
-* File-sharing permissions are checked before allowing access.
-* SHA-256 can be used for integrity verification.
-* Encryption keys should be stored separately from source code.
-* Sensitive configuration files should not be committed to GitHub.
-* Unauthorized users are prevented from accessing protected files.
+A new user creates an account through:
 
-## ⚠️ Limitations
+```text
+/register
+```
 
-This project is primarily intended as an **educational cybersecurity project** and should not be considered a production-grade enterprise file-sharing platform.
+### 2. Login
+
+The user authenticates through:
+
+```text
+/login
+```
+
+### 3. Dashboard
+
+After authentication, the user can access the dashboard.
+
+```text
+Login
+ ↓
+Dashboard
+```
+
+### 4. Upload
+
+The user selects a file and uploads it.
+
+```text
+User
+ ↓
+Upload File
+ ↓
+Encryption
+ ↓
+Encrypted Storage
+```
+
+### 5. Sharing
+
+The owner can share a file with another registered user.
+
+```text
+Owner
+ ↓
+Select File
+ ↓
+Select User
+ ↓
+Share
+```
+
+### 6. Download
+
+An authorized user can access the file through the application.
+
+```text
+Authorized User
+ ↓
+Request File
+ ↓
+Access Check
+ ↓
+Decrypt
+ ↓
+Download
+```
+
+---
+
+# 🛡️ Security Concepts Demonstrated
+
+This project demonstrates several important cybersecurity concepts:
+
+### 1. Symmetric Encryption
+
+Fernet is used to encrypt and decrypt file data using a secret key.
+
+### 2. Authentication
+
+Users must authenticate before accessing protected application functionality.
+
+### 3. Authorization
+
+Access to shared files is controlled based on the user's permissions.
+
+### 4. Secure Configuration
+
+Sensitive values are managed through environment variables rather than being directly embedded in source code.
+
+### 5. Secure File Handling
+
+Files are processed through the application's encryption workflow before being stored.
+
+---
+
+# 🧪 Testing
+
+The application can be tested by performing the following operations:
+
+```text
+✓ Register a new user
+✓ Login with valid credentials
+✓ Test invalid login credentials
+✓ Upload a file
+✓ Verify encrypted file storage
+✓ Download an uploaded file
+✓ Verify downloaded file contents
+✓ Share a file with another user
+✓ Verify authorized access
+✓ Test unauthorized access
+✓ Test multiple file uploads
+```
+
+---
+
+# ⚠️ Limitations
+
+This project is developed primarily as an **educational cybersecurity project**.
+
+For production deployment, additional security measures would be recommended, including:
+
+* Multi-factor authentication
+* Stronger account security controls
+* Rate limiting
+* HTTPS enforcement
+* Malware scanning for uploaded files
+* Dedicated secure key management
+* Key rotation
+* Improved audit logging
+* Secure cloud storage
+* Production-grade database configuration
+* Additional input validation and security hardening
+
+---
+
+# 🚀 Future Enhancements
 
 Potential improvements include:
 
-* Stronger production-grade authentication
-* Multi-factor authentication (MFA)
-* Role-based access control
-* Secure cloud object storage
-* Key rotation and dedicated key management
-* HTTPS enforcement
-* Rate limiting
-* Malware/file scanning
-* Improved audit logging
-* Secure password hashing and account recovery
-* Database encryption
-* Containerization and production deployment
+* 🔐 Multi-factor authentication
+* ☁️ Cloud-based encrypted storage
+* 🔗 Expiring file-sharing links
+* ⏳ Automatic file expiration
+* 🔑 Encryption key rotation
+* 📋 Detailed security audit logs
+* 🦠 Malware scanning
+* 👤 Role-based access control
+* 📧 Secure email-based file sharing
+* 📱 Improved responsive interface
 
-## 🚀 Future Enhancements
+---
 
-Possible future improvements include:
+# 🎯 Learning Outcomes
 
-1. ☁️ Cloud storage integration
-2. 🔐 Multi-factor authentication
-3. 🔑 Automated encryption-key rotation
-4. 👤 Role-based access control
-5. 📧 Secure sharing through expiring links
-6. ⏳ Automatic file expiration
-7. 📱 Responsive mobile interface
-8. 📋 Detailed security audit logs
-9. 🦠 Malware scanning before encryption
-10. 🔒 End-to-end encryption improvements
+This project provides practical experience with:
 
-## 🎯 Learning Outcomes
-
-Through this project, the following concepts are demonstrated:
-
+* Python
+* Flask
 * Symmetric cryptography
-* File encryption and decryption
-* Hashing and integrity verification
+* Fernet encryption
 * Authentication
-* Authorization and access control
+* Authorization
 * Secure file handling
 * Database management
-* Flask web development
-* Cybersecurity principles
-* Git and GitHub workflow
+* HTML/CSS/JavaScript
+* Jinja2 templating
+* Environment variables
+* Git and GitHub
+* Basic web application security
 
-## 👨‍💻 Author
+---
+
+# 👨‍💻 Author
 
 **Pranav Prakasam Nair**
 
 Computer Engineering Student
-Interested in **Cybersecurity, Cloud Computing, AI, and Software Development**
+
+Interested in:
+
+**Cybersecurity • Cloud Computing • Artificial Intelligence • Software Development**
 
 ---
 
-## 📜 License
+# 📜 License
 
-This project is developed for **educational and academic purposes**.
-
+This project was developed for **educational and academic purposes**.
