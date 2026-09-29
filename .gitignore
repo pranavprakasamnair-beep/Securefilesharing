@@ -1,10 +1,13 @@
 venv/
 env/
 .env
+
 __pycache__/
 *.py[cod]
-static/uploads/*
-!static/uploads/.gitkeep
+
+Main/static/uploads/*
+!Main/static/uploads/.gitkeep
+
 .vscode/
 .DS_Store
 *.log
